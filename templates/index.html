@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+{% block title %}中药目录 — Beranda{% endblock %}
+
+{% block content %}
+<!-- ═══ HERO ═══ -->
+<section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+        <p class="hero-eyebrow">中药 · Zhōng Yào</p>
+        <h1 class="hero-title">Katalog Obat Tradisional Chinese<br>Toko Obat Aman</h1>
+        <p class="hero-desc">Katalog obat herbal pilihan dari tradisi pengobatan ribuan tahun.<br> Temukan ramuan yang tepat untuk kesehatan Anda.</p>
+        <div class="hero-actions">
+            <a href="/katalog" class="btn btn--primary">Jelajahi Katalog</a>
+            <a href="/tentang" class="btn btn--outline">Tentang Kami</a>
+        </div>
+        <div class="hero-stats">
+            <div class="stat">
+                <span class="stat-num">{{ total_herbs }}</span>
+                <span class="stat-label">Jenis Herbal</span>
+            </div>
+            <div class="stat">
+                <span class="stat-num">{{ summary | length }}</span>
+                <span class="stat-label">Kategori</span>
+            </div>
+            <div class="stat">
+                <span class="stat-num">2000+</span>
+                <span class="stat-label">Tahun Tradisi</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══ PRODUK POPULER ═══ -->
+<section class="section">
+    <div class="section-header">
+        <p class="section-eyebrow">精选 · Jīng Xuǎn</p>
+        <h2 class="section-title">Produk Populer</h2>
+    </div>
+
+    <div class="herb-grid">
+        {% for herb in herbs_populer %}
+        <a href="/herb/{{ herb.id }}" class="herb-card">
+            <div class="herb-card-img">
+                {% if herb.gambar %}
+                <img src="{{ herb.gambar }}" alt="{{ herb.nama_indonesia }}">
+                {% else %}
+                <span class="herb-card-icon">{{ herb.nama_chinese }}</span>
+                {% endif %}
+                <span class="herb-card-badge badge--{{ herb.sifat.value }}">{{ herb.sifat.value | title }}</span>
+                </div>
+            <div class="herb-card-body">
+                <h3 class="herb-card-name">{{ herb.nama_indonesia }}</h3>
+                <p class="herb-card-pinyin">{{ herb.nama_pinyin }}</p>
+                <p class="herb-card-khasiat">{{ herb.khasiat }}</p>
+                <div class="herb-card-footer">
+                    <span class="herb-card-price">Rp {{ "{:,.0f}".format(herb.harga) }}</span>
+                    <span class="herb-card-unit">/ {{ herb.satuan }}</span>
+                </div>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+
+    <div class="section-cta">
+        <a href="/katalog" class="btn btn--primary">Lihat Semua Produk →</a>
+    </div>
+</section>
+
+<!-- ═══ KATEGORI ═══ -->
+<section class="section section--dark">
+    <div class="section-header">
+        <p class="section-eyebrow">分类 · Fēn Lèi</p>
+        <h2 class="section-title">Jelajahi Kategori</h2>
+    </div>
+    <div class="kategori-grid">
+        {% for kat, jumlah in summary.items() %}
+        <a href="/katalog?kategori={{ kat }}" class="kategori-card">
+            <span class="kategori-count">{{ jumlah }}</span>
+            <span class="kategori-name">{{ kat | replace("_", " ") | title }}</span>
+        </a>
+        {% endfor %}
+    </div>
+</section>
+
+<!-- ═══ INFO TCM ═══ -->
+<section class="section">
+    <div class="section-header">
+        <p class="section-eyebrow">知识 · Zhī Shi</p>
+        <h2 class="section-title">Prinsip Dasar TCM</h2>
+    </div>
+    <div class="info-grid">
+        <div class="info-card">
+            <div class="info-icon">阴阳</div>
+            <h3>Yin & Yang</h3>
+            <p>Keseimbangan dua kekuatan berlawanan dalam tubuh. Obat tradisional bekerja dengan memulihkan harmoni antara Yin dan Yang.</p>
+        </div>
+        <div class="info-card">
+            <div class="info-icon">五行</div>
+            <h3>Wu Xing (Lima Elemen)</h3>
+            <p>Kayu, Api, Tanah, Logam, dan Air — lima elemen yang saling berhubungan dan mempengaruhi organ tubuh.</p>
+        </div>
+        <div class="info-card">
+            <div class="info-icon">气</div>
+            <h3>Qi (Energi Vital)</h3>
+            <p>Aliran energi kehidupan yang mengalir melalui meridian tubuh. Herbal tonik membantu memperkuat dan melancarkan Qi.</p>
+        </div>
+    </div>
+</section>
+{% endblock %}

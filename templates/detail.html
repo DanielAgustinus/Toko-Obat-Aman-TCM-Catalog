@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% block title %}{{ herb.nama_indonesia }} ({{ herb.nama_chinese }}) — 中药目录{% endblock %}
+
+{% block content %}
+<section class="detail">
+    <a href="/katalog" class="detail-back">← Kembali ke Katalog</a>
+
+    <div class="detail-grid">
+        <!-- KIRI: Visual -->
+        <div class="detail-visual">
+           <div class="detail-img">
+                {% if herb.gambar %}
+                <img src="{{ herb.gambar }}" alt="{{ herb.nama_indonesia }}">
+                {% else %}
+                <span class="detail-hanzi">{{ herb.nama_chinese }}</span>
+                {% endif %}
+            </div>
+            <div class="detail-meta-badges">
+                <span class="badge badge--{{ herb.sifat.value }}">Sifat: {{ herb.sifat.value | title }}</span>
+                <span class="badge">{{ herb.kategori.value | replace("_"," ") | title }}</span>
+                {% for r in herb.rasa %}
+                <span class="badge badge--rasa">{{ r.value | title }}</span>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- KANAN: Info -->
+        <div class="detail-info">
+            <div class="detail-header">
+                <h1 class="detail-name">{{ herb.nama_indonesia }}</h1>
+                <p class="detail-pinyin">{{ herb.nama_pinyin }}
+                    {% if herb.nama_latin %}<br><em>{{ herb.nama_latin }}</em>{% endif %}
+                </p>
+            </div>
+
+            <div class="detail-price-box">
+                <span class="detail-price">Rp {{ "{:,.0f}".format(herb.harga) }}</span>
+                <span class="detail-unit">/ {{ herb.satuan }}</span>
+                {% if herb.stok > 0 %}
+                <span class="detail-stok stok--ada">✓ Stok tersedia ({{ herb.stok }})</span>
+                {% else %}
+                <span class="detail-stok stok--habis">✗ Stok habis</span>
+                {% endif %}
+            </div>
+
+            <div class="detail-section">
+                <h3>功效 Khasiat</h3>
+                <p class="detail-khasiat">{{ herb.khasiat }}</p>
+            </div>
+
+            <div class="detail-section">
+                <h3>简介 Deskripsi</h3>
+                <p>{{ herb.deskripsi }}</p>
+            </div>
+
+            {% if herb.meridian %}
+            <div class="detail-section">
+                <h3>经络 Meridian</h3>
+                <div class="meridian-list">
+                    {% for m in herb.meridian %}
+                    <span class="meridian-tag">{{ m }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            {% if herb.cara_pakai %}
+            <div class="detail-section">
+                <h3>用法 Cara Penggunaan</h3>
+                <p>{{ herb.cara_pakai }}</p>
+            </div>
+            {% endif %}
+
+            {% if herb.dosis %}
+            <div class="detail-section">
+                <h3>剂量 Dosis</h3>
+                <p>{{ herb.dosis }}</p>
+            </div>
+            {% endif %}
+
+            {% if herb.peringatan %}
+            <div class="detail-section detail-section--warning">
+                <h3>⚠ Peringatan</h3>
+                <p>{{ herb.peringatan }}</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% block title %}Katalog Lengkap — 中药目录{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <p class="section-eyebrow">目录 · Mù Lù</p>
+    <h1 class="page-title">Katalog Herbal</h1>
+</section>
+
+<!-- ═══ FILTER ═══ -->
+<section class="filter-bar">
+    <form method="get" action="/katalog" class="filter-form">
+        <div class="filter-search">
+            <input type="text" name="q" value="{{ query }}"
+                   placeholder="Cari nama, khasiat, atau deskripsi..."
+                   class="input-search">
+            <button type="submit" class="btn btn--primary btn--sm">Cari</button>
+        </div>
+        <div class="filter-selects">
+            <select name="kategori" class="input-select" onchange="this.form.submit()">
+                <option value="">Semua Kategori</option>
+                {% for kat in kategori_list %}
+                <option value="{{ kat }}" {% if kategori_aktif == kat %}selected{% endif %}>
+                    {{ kat | replace("_", " ") | title }}
+                </option>
+                {% endfor %}
+            </select>
+            <select name="sifat" class="input-select" onchange="this.form.submit()">
+                <option value="">Semua Sifat</option>
+                {% for s in sifat_list %}
+                <option value="{{ s }}" {% if sifat_aktif == s %}selected{% endif %}>
+                    {{ s | title }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+    </form>
+</section>
+
+<!-- ═══ HASIL ═══ -->
+<section class="section">
+    <p class="result-count">Menampilkan <strong>{{ herbs | length }}</strong> produk</p>
+
+    {% if herbs %}
+    <div class="herb-grid herb-grid--full">
+        {% for herb in herbs %}
+        <a href="/herb/{{ herb.id }}" class="herb-card">
+            <div class="herb-card-img">
+                {% if herb.gambar %}
+                <img src="{{ herb.gambar }}" alt="{{ herb.nama_indonesia }}">
+                {% else %}
+                <span class="herb-card-icon">{{ herb.nama_chinese }}</span>
+                {% endif %}
+                <span class="herb-card-badge badge--{{ herb.sifat.value }}">{{ herb.sifat.value | title }}</span>
+                <span class="herb-card-badge badge--{{ herb.sifat.value }}">{{ herb.sifat.value | title }}</span>
+                {% if herb.stok == 0 %}
+                <span class="herb-card-badge badge--habis">Habis</span>
+                {% endif %}
+            </div>
+            <div class="herb-card-body">
+                <div class="herb-card-tags">
+                    <span class="tag">{{ herb.kategori.value | replace("_"," ") | title }}</span>
+                    {% for r in herb.rasa %}
+                    <span class="tag tag--rasa">{{ r.value | title }}</span>
+                    {% endfor %}
+                </div>
+                <h3 class="herb-card-name">{{ herb.nama_indonesia }}</h3>
+                <p class="herb-card-pinyin">{{ herb.nama_pinyin }}
+                    {% if herb.nama_latin %}<em>· {{ herb.nama_latin }}</em>{% endif %}
+                </p>
+                <p class="herb-card-khasiat">{{ herb.khasiat }}</p>
+                <div class="herb-card-footer">
+                    <span class="herb-card-price">Rp {{ "{:,.0f}".format(herb.harga) }}</span>
+                    <span class="herb-card-unit">/ {{ herb.satuan }}</span>
+                    <span class="herb-card-stok">Stok: {{ herb.stok }}</span>
+                </div>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <span class="empty-icon">🔍</span>
+        <h3>Tidak ada hasil</h3>
+        <p>Coba ubah kata kunci atau filter pencarian Anda.</p>
+        <a href="/katalog" class="btn btn--outline">Reset Filter</a>
+    </div>
+    {% endif %}
+</section>
+{% endblock %}

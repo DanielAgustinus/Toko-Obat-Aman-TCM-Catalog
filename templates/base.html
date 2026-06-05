@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}天安堂 — Katalog Toko Obat Aman{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+    <!-- ═══ NAVIGASI ═══ -->
+    <nav class="nav">
+        <div class="nav-inner">
+            <a href="/" class="nav-brand">
+                <span class="brand-icon">草</span>
+                <span class="brand-text">天安堂</span>
+            </a>
+            <div class="nav-links">
+                <a href="/" class="nav-link">Beranda</a>
+                <a href="/katalog" class="nav-link">Katalog</a>
+                <a href="/tentang" class="nav-link">Tentang</a>
+                <a href="/docs" class="nav-link nav-link--api" target="_blank">API ↗</a>
+            </div>
+            <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- ═══ KONTEN UTAMA ═══ -->
+    <main class="main">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- ═══ FOOTER ═══ -->
+    <footer class="footer">
+        <div class="footer-inner">
+            <div class="footer-brand">
+                <span class="brand-icon">草</span>
+                <p>Katalog Toko Obat Aman</p>
+                <p class="footer-note">Menyediakan kebutuhan obat herbal berkualitas untuk kesehatan Anda</p>
+            </div>
+            <div class="footer-links">
+                <h4>Navigasi</h4>
+                <a href="/">Beranda</a>
+                <a href="/katalog">Katalog Lengkap</a>
+                <a href="/tentang">Tentang Kami</a>
+            </div>
+            <div class="footer-links">
+                <h4>Kategori Populer</h4>
+                <a href="/katalog?kategori=akar">Akar & Umbi</a>
+                <a href="/katalog?kategori=bunga">Bunga</a>
+                <a href="/katalog?kategori=jamur">Jamur</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2026 TCM Herbal Catalog. Dibuat dengan Python & FastAPI.</p>
+        </div>
+    </footer>
+
+    {% block scripts %}{% endblock %}
+</body>
+</html>
